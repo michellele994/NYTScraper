@@ -1,0 +1,27 @@
+.card {
+    margin: 20px 0px;
+    border: 2px solid black;
+    border-radius: 20px;
+}
+.card-header{
+    background-color: transparent;
+    border-bottom: 2px solid black;
+    font-size: 24px;
+    font-weight: bold;
+}
+.form-group {
+    margin: 40px 20%;
+    border: 1px solid black;
+}
+.results-button {
+    background-color: white;
+    margin: 0px 0px 20px;
+    padding: 10px 20px;
+    border: 2px outset black;
+    border-radius: 10px;
+    color: black;
+    font-weight: bold;
+}
+.results-button:hover {
+    background-color: #EEEEEE
+}
