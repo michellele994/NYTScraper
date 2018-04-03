@@ -22,11 +22,15 @@ class Articles extends Component {
   }
 
   loadArticles = () => {
-    API.getArticles(this.state.topic)
+    console.log(this.state);
+    API.getArticles({
+      q: this.state.topic,
+      begin_date: this.state.startdate,
+      end_date: this.state.enddate
+    })
       .then(res =>
         {
         this.setState({ articles: res.data.docs, topic: "", startdate: "", enddate: "" })
-        console.log(res.data.docs);
         }
       )
       .catch(err => console.log(err));
@@ -41,7 +45,6 @@ class Articles extends Component {
       .catch(err => console.log(err));
   }
   deleteArticle = (id) => {
-    console.log("Yo I should be an ID" +id);
     API.deleteArticle(id)
       .then(res => this.loadSavedArticles())
       .catch(err => console.log(err));
@@ -62,7 +65,7 @@ class Articles extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.topic) {
+    if (this.state.topic && this.state.startdate && this.state.enddate) {
       this.loadArticles();
     }
   };
@@ -73,7 +76,7 @@ class Articles extends Component {
       <div className="text-center">
               <Jumbotron>
                 <h1 className ="display-4 font-weight-bold">New York Times Article Scrubber</h1>
-                <p className="lead">Search for and annotate articles of interest!</p>
+                <p className="lead">Search for articles of interest!</p>
               </Jumbotron>
               <div className = "card">
                 <div className ="card-header">
@@ -90,16 +93,16 @@ class Articles extends Component {
                   value={this.state.startdate}
                   onChange={this.handleInputChange}
                   name="startdate"
-                  placeholder="Start Year (Optional)"
+                  placeholder="Start Year (Required)"
                 />
                 <Input
                   value={this.state.enddate}
                   onChange={this.handleInputChange}
                   name="enddate"
-                  placeholder="End Year (Optional)"
+                  placeholder="End Year (Required)"
                 />
                 <FormBtn
-                  disabled={!(this.state.topic)}
+                  disabled={!(this.state.topic && this.state.startdate && this.state.enddate)}
                   onClick={this.handleFormSubmit}
                 >
                   Search
@@ -118,12 +121,15 @@ class Articles extends Component {
                     title={article.headline.main || ""}
                     >
                     <SaveBtn
-                    // weburl={article.web_url || ""}
-                    // title={article.headline.main || ""}
                     onClick={()=>this.saveArticle(article.web_url, article.headline.main)}
                     >
                       Save
                     </SaveBtn>
+                    <div className="row">
+                      <div className="col-md-12">
+                      Published on {(article.pub_date).slice(0,10)}
+                      </div>
+                    </div>
                     </ListItem>
                   ))}
                 </List>
@@ -142,12 +148,15 @@ class Articles extends Component {
                     weburl={savedArticle.url || ""}
                     title={savedArticle.title || ""}>
                     <DeleteBtn
-                    // id={savedArticle._id || ""}
                     onClick={() => this.deleteArticle(savedArticle._id)}
-                    
                     >
                       Remove
                     </DeleteBtn>
+                    <div className="row">
+                      <div className="col-md-12">
+                      Saved on {(savedArticle.date).slice(0,10)}
+                      </div>
+                    </div>
                     </ListItem>
                   ))}
                 </List>
@@ -163,3 +172,4 @@ class Articles extends Component {
 }
 
 export default Articles;
+
