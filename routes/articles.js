@@ -8,8 +8,7 @@ router.get("/articles/", (req, res) => {
     apikey: "5ebc6c97b9d54381b6f387bfc06b79dd",
     q: parsed.q,
     begin_date: parsed.begin_date,
-    end_date: parsed.end_date,
-    sort: "newest"
+    end_date: parsed.end_date
   }
   console.log(req.query.query);
   console.log(parsed);
