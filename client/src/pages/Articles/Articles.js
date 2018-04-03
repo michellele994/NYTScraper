@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-// import DeleteBtn from "../../components/DeleteBtn";
 import Jumbotron from "../../components/Jumbotron";
 import API from "../../utils/API";
-// import { Link } from "react-router-dom";
-// import { Col, Row, Container } from "../../components/Grid";
 import { Container } from "../../components/Grid";
 import { List, ListItem, SaveBtn, DeleteBtn } from "../../components/List";
 import { Input, FormBtn } from "../../components/Form";
@@ -22,9 +19,9 @@ class Articles extends Component {
   }
 
   loadArticles = () => {
-    console.log(this.state);
+    let topicFix = (this.state.topic).split(' ').join('+');
     API.getArticles({
-      q: this.state.topic,
+      q: topicFix,
       begin_date: this.state.startdate,
       end_date: this.state.enddate
     })
@@ -84,22 +81,25 @@ class Articles extends Component {
                 </div>
                 <form>
                 <Input
+                  labelname="Topic"
                   value={this.state.topic}
                   onChange={this.handleInputChange}
                   name="topic"
                   placeholder="Topic (Required)"
                 />
                 <Input
+                  labelname="Start Date"
                   value={this.state.startdate}
                   onChange={this.handleInputChange}
                   name="startdate"
-                  placeholder="Start Year (Required)"
+                  placeholder="Start Year (Required: YYYYMMDD)"
                 />
                 <Input
+                  labelname="End Date"
                   value={this.state.enddate}
                   onChange={this.handleInputChange}
                   name="enddate"
-                  placeholder="End Year (Required)"
+                  placeholder="End Year (Required: YYYYMMDD)"
                 />
                 <FormBtn
                   disabled={!(this.state.topic && this.state.startdate && this.state.enddate)}
@@ -117,6 +117,7 @@ class Articles extends Component {
                 <List>
                   {this.state.articles.slice(0,5).map(article => (
                     <ListItem
+                    key={article._id}
                     weburl={article.web_url || ""}
                     title={article.headline.main || ""}
                     >
@@ -145,6 +146,7 @@ class Articles extends Component {
                 <List>
                   {this.state.saved.map(savedArticle => (
                     <ListItem
+                    key={savedArticle._id}
                     weburl={savedArticle.url || ""}
                     title={savedArticle.title || ""}>
                     <DeleteBtn

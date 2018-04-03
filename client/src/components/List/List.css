@@ -46,3 +46,6 @@
 .custom-button:hover {
   background-color: #EEEEEE;
 }
+input {
+  border: 1px solid black;
+}
