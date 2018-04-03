@@ -5,7 +5,7 @@ import API from "../../utils/API";
 // import { Link } from "react-router-dom";
 // import { Col, Row, Container } from "../../components/Grid";
 import { Container } from "../../components/Grid";
-import { List, ListItem, SaveBtn } from "../../components/List";
+import { List, ListItem, SaveBtn, DeleteBtn } from "../../components/List";
 import { Input, FormBtn } from "../../components/Form";
 
 class Articles extends Component {
@@ -38,12 +38,14 @@ class Articles extends Component {
         this.setState({saved: res.data});
         console.log(res.data);
       })
+      .catch(err => console.log(err));
   }
-  // deleteArticle = id => {
-  //   API.deleteArticle(id)
-  //     .then(res => this.loadArticles())
-  //     .catch(err => console.log(err));
-  // };
+  deleteArticle = (id) => {
+    console.log("Yo I should be an ID" +id);
+    API.deleteArticle(id)
+      .then(res => this.loadSavedArticles())
+      .catch(err => console.log(err));
+  };
   saveArticle = (articleUrl, articleTitle) =>
   {
     API.saveArticle(articleUrl, articleTitle)
@@ -133,17 +135,24 @@ class Articles extends Component {
               <div className ="card-header">
               Saved Articles
               </div>
-              {this.state.articles.length ? (
+              {this.state.saved.length ? (
                 <List>
                   {this.state.saved.map(savedArticle => (
                     <ListItem
                     weburl={savedArticle.url || ""}
                     title={savedArticle.title || ""}>
+                    <DeleteBtn
+                    // id={savedArticle._id || ""}
+                    onClick={() => this.deleteArticle(savedArticle._id)}
+                    
+                    >
+                      Remove
+                    </DeleteBtn>
                     </ListItem>
                   ))}
                 </List>
               ) : (
-                <h5>No Results to Display</h5>
+                <h5>No Saved Articles</h5>
               )}
             </div>
             

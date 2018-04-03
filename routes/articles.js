@@ -8,16 +8,13 @@ router.get("/articles/", (req, res) => {
     .then(({ data: { response } }) => res.json(response))
     .catch(err => res.status(422).json(err));
 });
-// router.get("/articles/saved", (req, res) => {
-//   axios
-//     .get(articlesController.findAll)
-//     .then((response) => res.json(response))
-//     .catch(err => {console.log("this"); res.status(422).json(err)});
-// });
 router
   .route("/articles/saved/")
   .get(articlesController.findAll)
-  .post(articlesController.save)
-  // .delete(booksController.remove);
+  .post(articlesController.save);
+router
+  .route("/articles/saved/:id")
+  .get(articlesController.findById)
+  .delete(articlesController.remove);
 
 module.exports = router;
